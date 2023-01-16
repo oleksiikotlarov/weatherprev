@@ -21,10 +21,14 @@ private let iconMap = [
 class WeatherViewModel: ObservableObject {
     @Published var name: String = "Your city"
     @Published var temp: Double = 0.0
+    @Published var lat = 0.0
+    @Published var lon = 0.0
     @Published var weatherDescription: String = "--"
     @Published var img: String = "cloud.sun.rain.fill"
     @Published var shouldShowLocationError: Bool = false
-    
+    @Published var min = 0.0
+    @Published var max = 0.0
+    @Published var feels = 0.0
     private let weatherService: WeatherService
     
     init(weatherService: WeatherService) {
@@ -45,6 +49,9 @@ class WeatherViewModel: ObservableObject {
                 self.temp = weather.temperature
                 self.weatherDescription = weather.description.capitalized
                 self.img = iconMap[weather.iconName] ?? defaultIcon
+                self.min = weather.tempMin
+                self.max = weather.tempMax
+                self.feels = weather.tempFeel
             }
         }
     }
@@ -124,10 +131,19 @@ struct APIResponse: Decodable {
     let name: String
     let main: APIMain
     let weather: [APIWeather]
+    let coord: APICoord
+}
+
+struct APICoord: Decodable {
+    let lon: Double
+    let lat: Double
 }
 
 struct APIMain: Decodable {
     let temp: Double
+    let temp_min: Double
+    let temp_max: Double
+    let feels_like: Double
 }
 
 struct APIWeather: Decodable {
@@ -147,11 +163,23 @@ public struct Weather {
     let temperature: Double
     let description: String
     let iconName: String
+    let lon: Double
+    let lat: Double
+    let tempMin: Double
+    let tempMax: Double
+    let tempFeel: Double
+    
     
     init(response: APIResponse) {
         city = response.name
         temperature = response.main.temp
         description = response.weather.first?.description ?? ""
         iconName = response.weather.first?.iconName ?? ""
+        lon = response.coord.lon
+        lat = response.coord.lat
+        tempMax = response.main.temp_max
+        tempMin = response.main.temp_min
+        tempFeel = response.main.feels_like
+        
     }
 }

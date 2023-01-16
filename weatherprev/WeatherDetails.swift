@@ -76,21 +76,10 @@ struct WeatherDetails: View {
             
             .padding(.horizontal)
             
-            
-            
         }
-        //.frame(maxWidth: .infinity, maxHeight: .infinity)
-        /*.background(
-            LinearGradient(colors: [Color(red: 0.1, green: 0.2, blue: 0.7), Color(red: 0.8, green: 0.1, blue: 0.4)], startPoint: .bottomTrailing, endPoint: .topLeading)
-                .opacity(0.1))
-        */
         .background(.red.opacity(0.1))
-        
         .font(.headline.weight(.bold))
         .foregroundStyle(.white)
-        
-        
-        
         
     }
 }

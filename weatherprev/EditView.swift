@@ -6,67 +6,107 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct EditView: View {
     @State private var locations = ["Paris", "Madrid", "Milan"]
     @Environment(\.dismiss) var dismiss
+    @State private var text = ""
+    @State private var showAddButton = false
+    @FocusState var isFocused : Bool
     var body: some View {
         ZStack {
-            LinearGradient(colors: [Color(red: 0.1, green: 0.2, blue: 0.7), Color(red: 0.8, green: 0.1, blue: 0.4)], startPoint: .bottomTrailing, endPoint: .topLeading).opacity(0.75)
-            VStack {
-                Image(systemName: "arrow.down")
-                    .renderingMode(.original)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 20)
-                    .padding()
-                    .onTapGesture {
-                        dismiss()
-                    }
-                   
-                List {
-                    ForEach(locations, id: \.self) { location in
-                        ZStack(alignment: .leading) {
-                            
-                            RoundedRectangle(cornerRadius: 30, style: .continuous)
-                                .fill(.white.opacity(0.3))
-                            
-                                .frame(height: 70)
-                            
-                            
-                            HStack() {
-                                Text("\(location)")
-                            }
-                            .font(.body)
-                            .foregroundColor(.white)
+            NavigationView {
+                
+                VStack(alignment: .leading) {
+                    
+                    
+                    HStack {
+                        Text("Edit your locations")
                             .padding()
+                        
+                            .font(.title)
+                            .opacity(0.9)
+                        Spacer()
+                        Button("Done") {
+                            withAnimation(.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 0.5)) {
+                                dismiss()
+                            }
                         }
                         
-                        .listRowBackground(Color.white.opacity(0))
-                        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                        .padding(.vertical,5)
-                        
+                        .padding()
+                        .background(.white.opacity(0.3))
+                        .mask(RoundedRectangle(cornerRadius: 20))
+                        .padding(5)
                     }
+                    .padding(.vertical)
+                    VStack {
+                        TextField("Search for a location", text: $text)
+                            .padding(.vertical,5)
+                            .focused($isFocused)
+                            
+                        if text.isEmpty {
+                            
+                        } else {
+                            Divider()
+                            Button("Add"){
+                                isFocused = false
+                            }
+                        }
+                    }
+                    .padding()
+                    .background(.white.opacity(0.2))
+                    .mask(RoundedRectangle(cornerRadius: 20))
+                    .padding(.vertical,10)
+                    .font(.headline)
+                    List {
+                        ForEach(locations, id: \.self) { location in
+                            ZStack(alignment: .leading) {
+                                
+                                RoundedRectangle(cornerRadius: 30, style: .continuous)
+                                    .fill(.white.opacity(0.3))
+                                
+                                    .frame(height: 70)
+                                
+                                
+                                HStack() {
+                                    Text("\(location)")
+                                }
+                                .font(.body)
+                                .foregroundColor(.white)
+                                .padding()
+                            }
+                            
+                            .listRowBackground(Color.white.opacity(0))
+                            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                            .padding(.vertical,5)
+                            
+                        }
+                    }
+                    .onAppear {
+                        UITableView.appearance().backgroundColor = .clear
+                        UITableViewCell.appearance().backgroundColor = .clear
+                    }
+                    .listStyle(.plain)
+                    .font(.title)
+                    .padding(.vertical,20)
+                    
+                    
                 }
-                .onAppear {
-                    UITableView.appearance().backgroundColor = .clear
-                    UITableViewCell.appearance().backgroundColor = .clear
-                }
-                .listStyle(.plain)
-                .font(.title)
-                .padding(.vertical,20)
-                
-                
+                .padding(3)
+                .background(.black.opacity(0.2))
+                .background(LinearGradient(colors: [Color(red: 0.1, green: 0.2, blue: 0.7), Color(red: 0.8, green: 0.1, blue: 0.4)], startPoint: .bottomTrailing, endPoint: .topLeading).opacity(0.9).saturation(0.9))
+                .foregroundColor(.white)
+                .navigationBarHidden(true)
+                .ignoresSafeArea()
             }
-            .padding(3)
-            .foregroundColor(.white)
         }
-        .ignoresSafeArea()
     }
 }
 
 struct EditView_Previews: PreviewProvider {
     static var previews: some View {
         EditView()
+            .preferredColorScheme(.dark)
     }
 }

@@ -18,7 +18,7 @@ struct WeatherTab: View {
     @StateObject var managerDelegate = locationDelegate()
     var body: some View {
         ZStack {
-            if !show {
+            if show == false {
                 VStack() {
                     Text(viewmodel.name)
                         .font(.largeTitle.weight(.bold))
@@ -72,9 +72,6 @@ struct WeatherTab: View {
                         .matchedGeometryEffect(id: "img", in: namespace)
                         .frame(minWidth: 170, maxWidth: 230, minHeight: 170, maxHeight: 230, alignment: .leading)
                         .padding(35)
-                    // .padding(.vertical)
-                    // .padding(.vertical)
-                    
                     
                     HStack {
                         Spacer()
@@ -83,28 +80,62 @@ struct WeatherTab: View {
                             .fontWeight(.bold)
                         
                             .matchedGeometryEffect(id: "temp", in: namespace)
-                        
-                        
                     }
                     
                     .padding(5)
                     .padding(.horizontal)
-                    //Spacer()
                     
-                    WeatherDetails()
-                        .frame(alignment: .top)
-                        .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
-                        .matchedGeometryEffect(id: "det", in: namespace)
-                    
-                    
-                    
+                    VStack {
+                        
+                        HStack {
+                            HStack {
+                                Text("min \(viewmodel.min.roundDouble())°C")
+                                    .padding()
+                                
+                                Text("max \(viewmodel.max.roundDouble())°C")
+                                    .padding()
+                            }
+                            .padding(.vertical,15)
+                            .background(.red.opacity(0.1))
+                            .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                            Spacer()
+                        }
+                        
+                        
+                        VStack {
+                            HStack {
+                                Text("feels like \(viewmodel.feels.roundDouble())°C")
+                                    .padding()
+                                    .padding(.vertical,15)
+                                    .background(.red.opacity(0.1))
+                                    .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                                Spacer()
+                                HStack {
+                                    
+                                    Text("\(viewmodel.weatherDescription.lowercased()) today")
+                                        
+                                }
+                                .padding()
+                                .padding(.vertical,15)
+                                .background(.red.opacity(0.1))
+                                .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                            }
+                        }
+                        
+                        
+                    }
+                    .padding()
+                    .font(.title3)
+                    .foregroundStyle(.white)
+                    .frame(alignment: .top)
+                    .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                    .matchedGeometryEffect(id: "det", in: namespace)
                     
                     Text(viewmodel.name)
                         .font(.largeTitle.weight(.bold))
                         .frame(alignment: .trailing)
                         .matchedGeometryEffect(id: "title", in: namespace)
                         .padding()
-                    
                     
                     HStack {
                         Spacer()
@@ -131,19 +162,14 @@ struct WeatherTab: View {
         }
         .onAppear{
             viewmodel.refresh()
-                
+            
         }
         .onTapGesture {
-            withAnimation(.spring(response: 0.6, dampingFraction: 0.8, blendDuration: 0.5)) {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 0.5)) {
                 show.toggle()
             }
         }
-        
-        
     }
-    
-    
-    
 }
 
 struct WeatherTab_Previews: PreviewProvider {
