@@ -11,7 +11,7 @@ import MapKit
 struct LocationsListView: View {
     
     @StateObject var places = PlacesWeather()
-    @StateObject var locats = Locations()
+   //@StateObject var locats = Locations()
     
     @State var weath = WeatherManager()
     

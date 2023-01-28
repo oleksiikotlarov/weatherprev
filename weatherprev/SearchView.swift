@@ -207,7 +207,6 @@ struct ItemCell: View {
     }
 }
 
-
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
         SearchView(locationService: LocationService.self.init())

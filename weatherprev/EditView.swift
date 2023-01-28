@@ -9,7 +9,8 @@ import SwiftUI
 import MapKit
 
 struct EditView: View {
-    @State private var locations = ["Paris", "Madrid", "Milan"]
+    //@State private var locations = ["Paris", "Madrid", "Milan"]
+    @StateObject var locations = Locations()
     @Environment(\.dismiss) var dismiss
     @State private var text = ""
     @State private var showAddButton = false
@@ -51,6 +52,8 @@ struct EditView: View {
                             Divider()
                             Button("Add"){
                                 isFocused = false
+                                
+                                dismiss()
                             }
                         }
                     }
@@ -59,7 +62,7 @@ struct EditView: View {
                     .mask(RoundedRectangle(cornerRadius: 20))
                     .padding(.vertical,10)
                     .font(.headline)
-                    List {
+                  /*  List {
                         ForEach(locations, id: \.self) { location in
                             ZStack(alignment: .leading) {
                                 
@@ -91,7 +94,7 @@ struct EditView: View {
                     .font(.title)
                     .padding(.vertical,20)
                     
-                    
+                   */
                 }
                 .padding(3)
                 .background(.black.opacity(0.2))
@@ -103,6 +106,8 @@ struct EditView: View {
         }
     }
 }
+
+
 
 struct EditView_Previews: PreviewProvider {
     static var previews: some View {
