@@ -15,8 +15,8 @@ class WeatherManager {
     var description: String = "_"
     @State  var refreshDone = false
     var places: PlacesWeather
-    @State private var locations = ["Paris", "Madrid", "Milan"]
-    //var locationsPL: Locations
+   // @State private var locations = ["Paris", "Madrid", "London"]
+    @State var locations = Locations()
     
     func fetchWeather(name: String) {
         guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(name)&appid=141ceea67617929ede8b5ff96f88d1a8&units=metric")
@@ -65,8 +65,8 @@ class WeatherManager {
     }
     
     func refresh() {
-        locations.forEach { location in
-            fetchWeather(name: location)
+        locations.items.forEach { location in
+            fetchWeather(name: location.name)
         }
         
     }
@@ -82,20 +82,12 @@ class WeatherManager {
     init() {
         
         places.self = PlacesWeather()
-        //locationsPL.self = Locations()
+        locations.self = Locations()
         
 
-       
-        
-       // print("AAA\(locationsPL.items) al ot locr")
-        
-        print(places.items)
-        
-        
-        
+        print("A1\(locations.items)")
         
     }
-    
     
 }
 

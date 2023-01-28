@@ -7,40 +7,30 @@
 
 import Foundation
 
-class Location: Identifiable, Codable {
+struct Location: Identifiable, Codable {
     var id = UUID()
     var name = "Anonymous"
     
 }
 
-@MainActor class Locations: ObservableObject {
-    @Published private(set) var places: [Location]
-    let saveKey = "SavedData"
-
+class Locations: ObservableObject {
+    @Published var items = [Location]() {
+        didSet {
+            if let encoded = try? JSONEncoder().encode(items) {
+                UserDefaults.standard.set(encoded, forKey: "Save")
+            }
+        }
+    }
+    
     init() {
-        if let data = UserDefaults.standard.data(forKey: saveKey) {
-            if let decoded = try? JSONDecoder().decode([Location].self, from: data) {
-                places = decoded
+        if let savedItems = UserDefaults.standard.data(forKey: "Save") {
+            if let decodedItems = try? JSONDecoder().decode([Location].self, from: savedItems) {
+                items = decodedItems
+                
                 return
             }
         }
-
-        places = []
-    }
-
-    private func save() {
-        if let encoded = try? JSONEncoder().encode(places) {
-            UserDefaults.standard.set(encoded, forKey: saveKey)
-        }
-    }
-
-    func add(_ place: Location) {
-        places.append(place)
-        save()
-    }
-
-    func toggle(_ place: Location) {
-        objectWillChange.send()
-        save()
+        
+        items = []
     }
 }

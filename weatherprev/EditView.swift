@@ -9,7 +9,6 @@ import SwiftUI
 import MapKit
 
 struct EditView: View {
-    //@State private var locations = ["Paris", "Madrid", "Milan"]
     @StateObject var locations = Locations()
     @Environment(\.dismiss) var dismiss
     @State private var text = ""
@@ -52,6 +51,16 @@ struct EditView: View {
                             Divider()
                             Button("Add"){
                                 isFocused = false
+                                let textCorrect = text.replacingOccurrences(of: " ", with: "")
+                                let encoder = JSONEncoder()
+                                let item = Location(id: UUID(), name: textCorrect)
+                                
+                                if let data = try? encoder.encode(item) {
+                                    UserDefaults.standard.set(data, forKey: "Save")
+                                }
+                                
+                                locations.items.append(item)
+                                
                                 
                                 dismiss()
                             }
@@ -62,8 +71,8 @@ struct EditView: View {
                     .mask(RoundedRectangle(cornerRadius: 20))
                     .padding(.vertical,10)
                     .font(.headline)
-                  /*  List {
-                        ForEach(locations, id: \.self) { location in
+                    List {
+                        ForEach(locations.items) { location in
                             ZStack(alignment: .leading) {
                                 
                                 RoundedRectangle(cornerRadius: 30, style: .continuous)
@@ -73,7 +82,7 @@ struct EditView: View {
                                 
                                 
                                 HStack() {
-                                    Text("\(location)")
+                                    Text("\(location.name)")
                                 }
                                 .font(.body)
                                 .foregroundColor(.white)
@@ -85,7 +94,9 @@ struct EditView: View {
                             .padding(.vertical,5)
                             
                         }
+                        .onDelete(perform: removeItems)
                     }
+                    
                     .onAppear {
                         UITableView.appearance().backgroundColor = .clear
                         UITableViewCell.appearance().backgroundColor = .clear
@@ -94,7 +105,7 @@ struct EditView: View {
                     .font(.title)
                     .padding(.vertical,20)
                     
-                   */
+                   
                 }
                 .padding(3)
                 .background(.black.opacity(0.2))
@@ -104,6 +115,10 @@ struct EditView: View {
                 .ignoresSafeArea()
             }
         }
+    }
+    
+    func removeItems(at offsets: IndexSet) {
+        locations.items.remove(atOffsets: offsets)
     }
 }
 

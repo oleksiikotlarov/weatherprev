@@ -9,10 +9,8 @@ import SwiftUI
 import MapKit
 
 struct LocationsListView: View {
-    
     @StateObject var places = PlacesWeather()
-   //@StateObject var locats = Locations()
-    
+
     @State var weath = WeatherManager()
     
     var body: some View {
@@ -50,9 +48,6 @@ struct LocationsListView: View {
                     
                     .padding(.vertical, 5)
                 }
-                
-                .onDelete(perform: removeItems)
-                
             }
             
             .listStyle(.plain)
@@ -67,11 +62,6 @@ struct LocationsListView: View {
             weath.clear()
             weath.refresh()
         }
-    }
-    
-    
-    func removeItems(at offsets: IndexSet) {
-        places.items.remove(atOffsets: offsets)
     }
 }
 
