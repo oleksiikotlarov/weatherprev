@@ -26,8 +26,8 @@ struct LocationsListView: View {
                         
                         HStack {
                             Image(systemName: weather.icon)
-                            //.renderingMode(.original)
                                 .padding(.horizontal)
+                            
                             Text("\(weather.temp.roundDouble())°C")
                                 .scaledToFill()
                                 .frame(width: 80, height: 20)
@@ -44,8 +44,6 @@ struct LocationsListView: View {
                     .background(.white.opacity(0.2))
                     .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    
                     .padding(.vertical, 5)
                 }
             }
@@ -60,7 +58,7 @@ struct LocationsListView: View {
         }
         .onAppear {
             weath.clear()
-            weath.refresh()
+            
         }
     }
 }

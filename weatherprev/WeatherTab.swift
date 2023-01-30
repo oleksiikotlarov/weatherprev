@@ -18,7 +18,7 @@ struct WeatherTab: View {
     @StateObject var managerDelegate = locationDelegate()
     var body: some View {
         ZStack {
-            if show == false {
+            if show == true {
                 VStack() {
                     Text(viewmodel.name)
                         .font(.largeTitle.weight(.bold))
@@ -44,9 +44,7 @@ struct WeatherTab: View {
                             .matchedGeometryEffect(id: "temp", in: namespace)
                             .frame(alignment: .trailing)
                             .padding(5)
-                        
                     }
-                    
                     
                 }
                 .padding()
@@ -63,7 +61,6 @@ struct WeatherTab: View {
             } else {
                 VStack(alignment: .leading, spacing: 12) {
                     Spacer()
-                    
                     
                     Image(systemName: "\(viewmodel.img)")
                         .renderingMode(.original)
@@ -90,45 +87,40 @@ struct WeatherTab: View {
                         HStack {
                             HStack {
                                 Text("min \(viewmodel.min.roundDouble())°C")
-                                    .padding()
+                                    .padding(5)
+                                Divider()
+                                    .frame(width: 2, height: 40)
+                                    .overlay(.white.opacity(0.5))
                                 
                                 Text("max \(viewmodel.max.roundDouble())°C")
-                                    .padding()
+                                    .padding(5)
+                                Divider()
+                                    .frame(width: 2, height: 40)
+                                    .overlay(.white.opacity(0.5))
+                                
+                                Text("feels like \(viewmodel.feels.roundDouble())°C")
+                                    .padding(5)
                             }
-                            .padding(.vertical,15)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 80)
                             .background(.red.opacity(0.1))
                             .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                           
+                        }
+                        .padding(.vertical,10)
+                        
+                        HStack {
                             Spacer()
-                        }
-                        
-                        
-                        VStack {
                             HStack {
-                                Text("feels like \(viewmodel.feels.roundDouble())°C")
-                                    .padding()
-                                    .padding(.vertical,15)
-                                    .background(.red.opacity(0.1))
-                                    .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
-                                Spacer()
-                                HStack {
-                                    
-                                    Text("\(viewmodel.weatherDescription.lowercased()) today")
-                                        
-                                }
-                                .padding()
-                                .padding(.vertical,15)
-                                .background(.red.opacity(0.1))
-                                .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                                
+                                Text("\(viewmodel.weatherDescription.lowercased()) today")
+                                    .font(.headline)
                             }
+                            .padding(20)
                         }
-                        
-                        
                     }
-                    .padding()
-                    .font(.title3)
+                    .font(.body)
                     .foregroundStyle(.white)
-                    .frame(alignment: .top)
-                    .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
                     .matchedGeometryEffect(id: "det", in: namespace)
                     
                     Text(viewmodel.name)

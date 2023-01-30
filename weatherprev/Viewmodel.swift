@@ -84,6 +84,7 @@ class WeatherManager {
         places.self = PlacesWeather()
         locations.self = Locations()
         
+        refresh()
 
         print("A1\(locations.items)")
         
